@@ -74,3 +74,17 @@ arrr = [4, 3, 8, 7, 9, 1, 2]
 # print(insertion_sort(arrr))
 # print(bubble_sort(arrr))
 print(fast_sort(arrr))
+sss = 'dfd fdfd'
+
+print(list(sss))
+
+qq = 'fdfdf'
+print(list(qq))
+print([i  for i in range (0,10)])
+print(qq[1:])
+len = [0]*10
+
+for i in range(3):
+    x = '.append(1)'
+    exec(f'len[{i}]=2')
+    print(len)
