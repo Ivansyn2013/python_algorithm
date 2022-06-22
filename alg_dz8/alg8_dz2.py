@@ -119,7 +119,8 @@ my_tree.root = my_tree.new_node(1)
 my_tree.root.left = my_tree.new_node(2)
 my_tree.root.right = my_tree.new_node(3)
 my_tree.root.right.right = my_tree.new_node(4)
-#my_tree.print_level_order(my_tree.root)
+my_tree.print_level_order(my_tree.root)
+print(my_tree.heigth(my_tree.root))
 #print('path to values',my_tree.root.left.value)
 
 
@@ -129,24 +130,55 @@ def haffman_alg(stri):
     my_code = ''
     beeb_tree = Tree()
     sort_list = collections.Counter(list(stri))
-    print(sort_list)
-    print('ff',get_deque(sort_list.most_common()))
-    parent_nodes = set(get_deque(sort_list.most_common()))
+    #print(sort_list)
+    #print('ff',get_deque(sort_list.most_common()))
+    nodes = (get_deque(sort_list.most_common()))
+    print('узлы',(nodes))
+    first_bra = nodes.popitem()
+    beeb_tree.root = beeb_tree.new_node(first_bra()[0])
+    beeb_tree.root.left = beeb_tree.new_node(first_bra()[1][0])
+    beeb_tree.root.right = beeb_tree.new_node(first_bra()[1][1])
 
-    all_nodes = list(parent_nodes)
-    beeb_tree.root = beeb_tree.new_node(all_nodes.pop())
-
-    all_nodes.sort(key= lambda x: x[1])
-    print('aa', all_nodes)
+    start_point = beeb_tree.root
     l = 'beeb_tree.root.left'
     r = 'beeb_tree.root.right'
-    while len(all_nodes) != 0 :
+    while len(nodes) != 0 :
+        new_bra = nodes.popitem()
+        for sign in  new_bra[0][0]:
+            h = beeb_tree.heigth(beeb_tree.root)
+            i = 1
 
+            if sign in list(start_point.left.value()[0]):
+                while i <=h:
+                    start_point.left.left = beeb_tree.new_node(new_bra[1][1])
+                    start_point.left.right = beeb_tree.new_node(new_bra[1][2])
+
+            elif sign in list(start_point.right.value()[0]):
+                start_point.right.left = beeb_tree.new_node(new_bra[1][1])
+                start_point.right.right = beeb_tree.new_node(new_bra[1][2])
+
+                i+=1
+        if new_bra[0] == start_point.left.value():
+            start_point.left.left = beeb_tree.new_node(new_bra[1][1])
+            start_point.left.right = beeb_tree.new_node(new_bra[1][2])
+
+            if new_bra2[0] == r.value():
+                r += '.right'
+                exec(f'{r} = beeb_tree.new_node(new_bra[1])')
+                continue
+            else:
+                continue
+        elif new_bra[0] == r.value():
+            r +='.right'
+            exec(f'{r} = beeb_tree.new_node(new_bra[1])')
         #print(all_nodes)
-        exec(f'{l} = beeb_tree.new_node(all_nodes.pop())')
-        exec(f'{r} = beeb_tree.new_node(all_nodes.pop())')
+        exec(f'{l} = beeb_tree.new_node(nodes.pop())')
+        exec(f'{r} = beeb_tree.new_node(nodes.pop())')
         l += '.left'
         r += '.right'
+
+
+
 
     beeb_tree.print_level_order(beeb_tree.root)
 
@@ -156,7 +188,7 @@ def haffman_alg(stri):
     return CODE
 
 def get_deque(s_l):
-    deq = []
+    deq = {}
     while len(s_l) !=1:
         #print(s_l)
         s_l.sort(key= lambda x: x[1], reverse=True)
@@ -164,16 +196,42 @@ def get_deque(s_l):
         r_branch = s_l.pop()
         l_branch = s_l.pop()
         res = ((l_branch[0]+r_branch[0], l_branch[1]+r_branch[1]))
-        deq.append(res)
-        deq.append(r_branch)
-        deq.append(l_branch)
+        deq[res]=(l_branch,r_branch)
+
         s_l.append((l_branch[0]+r_branch[0], l_branch[1]+r_branch[1]))
+
+        deq
     else:
         return deq
 
 
+def new_try(stri):
+    sort_list = collections.Counter(list(stri))
+    nodes = (get_deque(sort_list.most_common()))
+    code = ''
+    for alpha in list(stri):
 
+        code_d = nodes.copy()
+        code_alpha = ''
+        while len(code_d)!=0:
+            tmp = code_d.popitem()[1]
+            if alpha in tmp[0][0]:
+                code_alpha += '0'
+                if len(tmp[0][0]) == 1:
+                    break
+                continue
 
-print(haffman_alg('beeb boob bear'))
+            elif alpha in tmp[1][0]:
+                code_alpha += '1'
+                if len(tmp[1][0]) == 1:
+                    break
+                continue
+        print(code_alpha)
+        code += code_alpha
 
-print()
+    return  code
+
+print(new_try('beep boop beer!'))
+
+# Извините за полынй бардак. Я пытался как мог через дерево, но разбился о его создание из списка или словаря.
+# В результате сделал просто через словарь. Хардкод , но вроде работает.

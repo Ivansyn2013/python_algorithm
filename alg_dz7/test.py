@@ -82,9 +82,15 @@ qq = 'fdfdf'
 print(list(qq))
 print([i  for i in range (0,10)])
 print(qq[1:])
-len = [0]*10
+leni = [0]*10
 
 for i in range(3):
     x = '.append(1)'
-    exec(f'len[{i}]=2')
-    print(len)
+    exec(f'leni[{i}]=2')
+    print(leni)
+
+test_dict = {'test': (1,2), 'test2': (3,4)}
+# print(len(test_dict))
+# print(test_dict.popitem())
+# print(len(test_dict))
+print(test_dict.items())
